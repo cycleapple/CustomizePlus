@@ -1,4 +1,4 @@
-﻿using Dalamud.Plugin.Services;
+using Dalamud.Plugin.Services;
 using Dalamud.Plugin;
 using OtterGui.Log;
 using Penumbra.GameData.Data;
@@ -19,10 +19,10 @@ public sealed class ReverseSearchDictENpc(IDalamudPluginInterface pluginInterfac
     /// <summary> Create the data. </summary>
     private static IReadOnlyDictionary<string, uint> CreateENpcData(IDataManager gameData, ISeStringEvaluator evaluator)
     {
-        var sheet = gameData.GetExcelSheet<ENpcResident>(gameData.Language)!;
+        var sheet = gameData.GetSafeExcelSheet<ENpcResident>(gameData.GetSafeLanguage())!;
         var dict = new Dictionary<string, uint>((int)sheet.Count);
         foreach (var n in sheet.Where(e => e.Singular.ByteLength > 0))
-            dict.TryAdd(evaluator.EvaluateObjStr(ObjectKind.EventNpc, n.RowId, gameData.Language), n.RowId);
+            dict.TryAdd(evaluator.EvaluateObjStr(ObjectKind.EventNpc, n.RowId, gameData.GetSafeLanguage()), n.RowId);
         return dict.ToFrozenDictionary();
     }
 

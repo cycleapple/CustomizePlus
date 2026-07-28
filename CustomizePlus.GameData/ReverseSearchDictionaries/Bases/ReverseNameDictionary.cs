@@ -1,4 +1,4 @@
-﻿using Dalamud.Plugin.Services;
+using Dalamud.Plugin.Services;
 using Dalamud.Plugin;
 using FFXIVClientStructs.FFXIV.Common.Lua;
 using OtterGui.Log;
@@ -29,7 +29,7 @@ public abstract class ReverseNameDictionary(
     string name,
     int version,
     Func<IReadOnlyDictionary<string, uint>> factory)
-    : DataSharer<IReadOnlyDictionary<string, uint>>(pluginInterface, log, name, gameData.Language, version, factory),
+    : DataSharer<IReadOnlyDictionary<string, uint>>(pluginInterface, log, name, gameData.GetSafeLanguage(), version, factory),
         IReadOnlyDictionary<string, NpcId>
 {
     /// <inheritdoc/>

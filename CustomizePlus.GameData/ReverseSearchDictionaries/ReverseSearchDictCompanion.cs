@@ -1,4 +1,4 @@
-﻿using Dalamud.Plugin.Services;
+using Dalamud.Plugin.Services;
 using Dalamud.Plugin;
 using OtterGui.Log;
 using Penumbra.GameData.Data;
@@ -19,10 +19,10 @@ public sealed class ReverseSearchDictCompanion(IDalamudPluginInterface pluginInt
     /// <summary> Create the data. </summary>
     private static IReadOnlyDictionary<string, uint> CreateCompanionData(IDataManager gameData, ISeStringEvaluator evaluator)
     {
-        var sheet = gameData.GetExcelSheet<Companion>(gameData.Language)!;
+        var sheet = gameData.GetSafeExcelSheet<Companion>(gameData.GetSafeLanguage())!;
         var dict = new Dictionary<string, uint>((int)sheet.Count);
         foreach (var c in sheet.Where(c => c.Singular.ByteLength > 0 && c.Order < ushort.MaxValue))
-            dict.TryAdd(evaluator.EvaluateObjStr(ObjectKind.Companion, c.RowId, gameData.Language), c.RowId);
+            dict.TryAdd(evaluator.EvaluateObjStr(ObjectKind.Companion, c.RowId, gameData.GetSafeLanguage()), c.RowId);
         return dict.ToFrozenDictionary();
     }
 

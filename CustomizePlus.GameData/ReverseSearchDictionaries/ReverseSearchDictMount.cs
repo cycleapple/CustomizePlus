@@ -1,4 +1,4 @@
-﻿using Dalamud.Plugin.Services;
+using Dalamud.Plugin.Services;
 using Dalamud.Plugin;
 using OtterGui.Log;
 using Penumbra.GameData.Data;
@@ -17,7 +17,7 @@ public sealed class ReverseSearchDictMount(IDalamudPluginInterface pluginInterfa
     /// <summary> Create the data. </summary>
     private static IReadOnlyDictionary<string, uint> CreateMountData(IDataManager gameData)
     {
-        var sheet = gameData.GetExcelSheet<Mount>(gameData.Language)!;
+        var sheet = gameData.GetSafeExcelSheet<Mount>(gameData.GetSafeLanguage())!;
         var dict = new Dictionary<string, uint>((int)sheet.Count);
         // Add some custom data.
         dict.TryAdd("Falcon (Porter)", 119);
@@ -29,7 +29,7 @@ public sealed class ReverseSearchDictMount(IDalamudPluginInterface pluginInterfa
         {
             if (m.Singular.ByteLength > 0 && m.Order >= 0)
             {
-                dict.TryAdd(DataUtility.ToTitleCaseExtended(m.Singular, gameData.Language), m.RowId);
+                dict.TryAdd(DataUtility.ToTitleCaseExtended(m.Singular, gameData.GetSafeLanguage()), m.RowId);
             }
             else if (m.Unknown1.ByteLength > 0)
             {
