@@ -3,7 +3,7 @@
 <Project Sdk="Dalamud.NET.Sdk/13.0.0">
   <PropertyGroup>
     <AssemblyTitle>CustomizePlus</AssemblyTitle>
-    <Version>2.0.7.27</Version>
+    <Version>2.0.7.28</Version>
     <Description>Customize+</Description>
     <Copyright></Copyright>
     <PackageProjectUrl>https://github.com/Aether-Tools/CustomizePlus</PackageProjectUrl>
