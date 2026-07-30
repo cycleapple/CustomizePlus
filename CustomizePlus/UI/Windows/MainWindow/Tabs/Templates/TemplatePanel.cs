@@ -38,7 +38,7 @@ public class TemplatePanel : IDisposable
     private bool _isEditorEnablePending = false;
 
     private string SelectionName
-        => _selector.Selected == null ? "No Selection" : _selector.IncognitoMode ? _selector.Selected.Incognito : _selector.Selected.Name.Text;
+        => _selector.Selected == null ? "未選取" : _selector.IncognitoMode ? _selector.Selected.Incognito : _selector.Selected.Name.Text;
 
     public TemplatePanel(
         TemplateFileSystemSelector selector,
@@ -90,14 +90,14 @@ public class TemplatePanel : IDisposable
             : _selector.Selected.IsWriteProtected
                 ? new HeaderDrawer.Button
                 {
-                    Description = "Make this template editable.",
+                Description = "允許編輯此範本。",
                     Icon = FontAwesomeIcon.Lock,
                     OnClick = () => _manager.SetWriteProtection(_selector.Selected!, false),
                     Disabled = _boneEditor.IsEditorActive
                 }
                 : new HeaderDrawer.Button
                 {
-                    Description = "Write-protect this template.",
+                Description = "將此範本設為寫入保護。",
                     Icon = FontAwesomeIcon.LockOpen,
                     OnClick = () => _manager.SetWriteProtection(_selector.Selected!, true),
                     Disabled = _boneEditor.IsEditorActive
@@ -106,7 +106,7 @@ public class TemplatePanel : IDisposable
     private HeaderDrawer.Button ExportToClipboardButton()
         => new()
         {
-            Description = "Copy the current template to your clipboard.",
+                Description = "將目前範本複製到剪貼簿。",
             Icon = FontAwesomeIcon.Copy,
             OnClick = ExportToClipboard,
             Visible = _selector.Selected != null,
@@ -129,7 +129,7 @@ public class TemplatePanel : IDisposable
         var sizeFolders = availableSizePercent * 65;
 
         ImGui.NewLine();
-        ImGui.TextUnformatted("Currently Selected Templates");
+        ImGui.TextUnformatted("目前選取的範本");
         ImGui.Separator();
         using var table = ImRaii.Table("templates", 3, ImGuiTableFlags.RowBg);
         ImGui.TableSetupColumn("btn", ImGuiTableColumnFlags.WidthFixed, sizeType);
@@ -143,7 +143,7 @@ public class TemplatePanel : IDisposable
             using var id = ImRaii.PushId(i++);
             ImGui.TableNextColumn();
             var icon = (path is TemplateFileSystem.Leaf ? FontAwesomeIcon.FileCircleMinus : FontAwesomeIcon.FolderMinus).ToIconString();
-            if (ImGuiUtil.DrawDisabledButton(icon, new Vector2(sizeType), "Remove from selection.", false, true))
+                if (ImGuiUtil.DrawDisabledButton(icon, new Vector2(sizeType), "從選取項目中移除。", false, true))
                 _selector.RemovePathFromMultiSelection(path);
 
             ImGui.TableNextColumn();
@@ -152,7 +152,7 @@ public class TemplatePanel : IDisposable
 
             ImGui.TableNextColumn();
             ImGui.AlignTextToFramePadding();
-            ImGui.TextUnformatted(_selector.IncognitoMode ? "Incognito is active" : fullName);
+                ImGui.TextUnformatted(_selector.IncognitoMode ? "匿名模式使用中" : fullName);
         }
     }
 
@@ -175,8 +175,8 @@ public class TemplatePanel : IDisposable
     {
         (bool isEditorAllowed, bool isEditorActive) = CanToggleEditor();
 
-        if (ImGuiUtil.DrawDisabledButton($"{(_boneEditor.IsEditorActive ? "Finish" : "Start")} bone editing", Vector2.Zero,
-            "Toggle the bone editor for this template", !isEditorAllowed))
+            if (ImGuiUtil.DrawDisabledButton($"{(_boneEditor.IsEditorActive ? "結束" : "開始")}骨骼編輯", Vector2.Zero,
+                    "切換此範本的骨骼編輯器", !isEditorAllowed))
         {
             if (!isEditorActive)
                 _boneEditor.EnableEditor(_selector.Selected!);
@@ -199,7 +199,7 @@ public class TemplatePanel : IDisposable
                 ImGui.TableSetupColumn("BasicCol1", ImGuiTableColumnFlags.WidthFixed, ImGui.CalcTextSize("lorem ipsum dolor").X);
                 ImGui.TableSetupColumn("BasicCol2", ImGuiTableColumnFlags.WidthStretch);
 
-                ImGuiUtil.DrawFrameColumn("Template Name");
+                ImGuiUtil.DrawFrameColumn("範本名稱");
                 ImGui.TableNextColumn();
                 var width = new Vector2(ImGui.GetContentRegionAvail().X, 0);
                 var name = _newName ?? _selector.Selected!.Name;

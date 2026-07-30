@@ -178,7 +178,7 @@ public class ProfileFileSystemSelector : FileSystemSelector<Profile, ProfileStat
 
     private void NewButton(Vector2 size)
     {
-        if (!ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Plus.ToIconString(), size, "Create a new profile with default configuration.", false,
+            if (!ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Plus.ToIconString(), size, "以預設設定建立新的設定檔。", false,
                 true))
             return;
 
@@ -188,8 +188,8 @@ public class ProfileFileSystemSelector : FileSystemSelector<Profile, ProfileStat
     private void CloneButton(Vector2 size)
     {
         var tt = SelectedLeaf == null
-            ? "No profile selected."
-            : "Clone the currently selected profile to a duplicate";
+                ? "尚未選取設定檔。"
+                : "複製目前選取的設定檔";
         if (!ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Clone.ToIconString(), size, tt, SelectedLeaf == null, true))
             return;
 
@@ -208,8 +208,8 @@ public class ProfileFileSystemSelector : FileSystemSelector<Profile, ProfileStat
 
     private void SetFilterTooltip()
     {
-        FilterTooltip = "Filter profiles for those where their full paths or names contain the given substring.\n"
-          + "Enter n:[string] to filter only for profile names and no paths.";
+        FilterTooltip = "篩選完整路徑或名稱含有指定文字的設定檔。\n"
+                      + "輸入 n:[文字] 可只篩選設定檔名稱，不包含路徑。";
     }
 
     /// <summary> Appropriately identify and set the string filter and its type. </summary>

@@ -101,10 +101,12 @@ public class MainWindow : Window, IDisposable
         using (var disabled = ImRaii.Disabled(_hookingService.RenderHookFailed || _hookingService.MovementHookFailed))
         {
             LockWindowClosureIfNeeded();
-            ImGuiEx.EzTabBar("##tabs", null, _switchToTab, [
-                ("Settings", _settingsTab.Draw, null, true),
-                ("Templates", _templatesTab.Draw, null, true),
-                ("Profiles", _profilesTab.Draw, null, true),
+            const string templateTabLabel = "範本###Templates";
+            var selectedTab = _switchToTab == "Templates" ? templateTabLabel : _switchToTab;
+            ImGuiEx.EzTabBar("##tabs", null, selectedTab, [
+                ("設定###Settings", _settingsTab.Draw, null, true),
+                (templateTabLabel, _templatesTab.Draw, null, true),
+                ("設定檔###Profiles", _profilesTab.Draw, null, true),
                 (_configuration.DebuggingModeEnabled ? "IPC Test" : null, _ipcTestTab.Draw, ImGuiColors.DalamudGrey, true),
                 (_configuration.DebuggingModeEnabled ? "State monitoring" : null, _stateMonitoringTab.Draw, ImGuiColors.DalamudGrey, true),
             ]);

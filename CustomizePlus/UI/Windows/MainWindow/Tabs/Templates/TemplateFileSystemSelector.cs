@@ -286,7 +286,7 @@ public class TemplateFileSystemSelector : FileSystemSelector<Template, TemplateS
 
     private void NewButton(Vector2 size)
     {
-        if (!ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Plus.ToIconString(), size, "Create a new template with default configuration.", false,
+            if (!ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Plus.ToIconString(), size, "以預設設定建立新的範本。", false,
                 true))
             return;
 
@@ -301,7 +301,7 @@ public class TemplateFileSystemSelector : FileSystemSelector<Template, TemplateS
 
     private void ClipboardImportButton(Vector2 size)
     {
-        if (!ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Clipboard.ToIconString(), size, "Try to import a template from your clipboard.", false,
+            if (!ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Clipboard.ToIconString(), size, "嘗試從剪貼簿匯入範本。", false,
                 true))
             return;
 
@@ -318,13 +318,13 @@ public class TemplateFileSystemSelector : FileSystemSelector<Template, TemplateS
         }
         catch
         {
-            _messageService.NotificationMessage("Could not import data from clipboard.", NotificationType.Error, false);
+                _messageService.NotificationMessage("無法從剪貼簿匯入資料。", NotificationType.Error, false);
         }
     }
 
     private void AnamnesisImportButton(Vector2 size)
     {
-        if (!ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.FileImport.ToIconString(), size, "Import a template from anamnesis pose file (scaling only)", false,
+            if (!ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.FileImport.ToIconString(), size, "從 Anamnesis 姿勢檔匯入範本（僅限縮放）", false,
                 true))
             return;
 
@@ -334,7 +334,7 @@ public class TemplateFileSystemSelector : FileSystemSelector<Template, TemplateS
             return;
         }
 
-        _importFilePicker.OpenFileDialog("Import Pose File", ".pose", (isSuccess, path) =>
+                _importFilePicker.OpenFileDialog("匯入姿勢檔", ".pose", (isSuccess, path) =>
         {
             if (isSuccess)
             {
@@ -347,7 +347,7 @@ public class TemplateFileSystemSelector : FileSystemSelector<Template, TemplateS
                 {
                     if (bones.Count == 0)
                     {
-                        _messageService.NotificationMessage("Selected anamnesis pose file doesn't contain any scaled bones", NotificationType.Error);
+                                _messageService.NotificationMessage("選取的 Anamnesis 姿勢檔不含任何縮放過的骨骼。", NotificationType.Error);
                         return;
                     }
 
@@ -356,7 +356,7 @@ public class TemplateFileSystemSelector : FileSystemSelector<Template, TemplateS
                 else
                 {
                     _messageService.NotificationMessage(
-                        $"Error parsing anamnesis pose file at '{path}'", NotificationType.Error);
+                                $"剖析 Anamnesis 姿勢檔「{path}」時發生錯誤。", NotificationType.Error);
                 }
             }
             else
@@ -374,8 +374,8 @@ public class TemplateFileSystemSelector : FileSystemSelector<Template, TemplateS
     private void CloneButton(Vector2 size)
     {
         var tt = SelectedLeaf == null
-            ? "No template selected."
-            : "Clone the currently selected template to a duplicate";
+                ? "尚未選取範本。"
+                : "複製目前選取的範本";
         if (!ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Clone.ToIconString(), size, tt, SelectedLeaf == null, true))
             return;
 
@@ -409,8 +409,8 @@ public class TemplateFileSystemSelector : FileSystemSelector<Template, TemplateS
 
     private void SetFilterTooltip()
     {
-        FilterTooltip = "Filter templates for those where their full paths or names contain the given substring.\n"
-          + "Enter n:[string] to filter only for template names and no paths.";
+        FilterTooltip = "篩選完整路徑或名稱含有指定文字的範本。\n"
+                      + "輸入 n:[文字] 可只篩選範本名稱，不包含路徑。";
     }
 
     /// <summary> Appropriately identify and set the string filter and its type. </summary>

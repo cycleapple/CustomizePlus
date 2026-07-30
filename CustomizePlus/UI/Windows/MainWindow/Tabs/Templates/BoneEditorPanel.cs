@@ -104,10 +104,10 @@ public class BoneEditorPanel
             string characterText = null!;
 
             if (_templateFileSystemSelector.IncognitoMode)
-                characterText = "Previewing on: incognito active";
+                characterText = "預覽角色：匿名模式使用中";
             else
-                characterText = _editorManager.Character.IsValid ? $"Previewing on: {(_editorManager.Character.Type == Penumbra.GameData.Enums.IdentifierType.Owned ?
-                _editorManager.Character.ToNameWithoutOwnerName() : _editorManager.Character.ToString())}" : "No valid character selected";
+                characterText = _editorManager.Character.IsValid ? $"預覽角色：{(_editorManager.Character.Type == Penumbra.GameData.Enums.IdentifierType.Owned ?
+                _editorManager.Character.ToNameWithoutOwnerName() : _editorManager.Character.ToString())}" : "尚未選取有效角色";
 
             ImGuiUtil.PrintIcon(FontAwesomeIcon.User);
             ImGui.SameLine();
@@ -115,7 +115,7 @@ public class BoneEditorPanel
 
             ImGui.Separator();
 
-            var isShouldDraw = ImGui.CollapsingHeader("Change preview character");
+            var isShouldDraw = ImGui.CollapsingHeader("變更預覽角色");
 
             if (isShouldDraw)
             {
@@ -131,21 +131,21 @@ public class BoneEditorPanel
 
                         var buttonWidth = new Vector2(165 * ImGuiHelpers.GlobalScale - ImGui.GetStyle().ItemSpacing.X / 2, 0);
 
-                        if (ImGuiUtil.DrawDisabledButton("Apply to player character", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetPlayer))
+                        if (ImGuiUtil.DrawDisabledButton("套用至玩家角色", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetPlayer))
                             _editorManager.ChangeEditorCharacter(_actorAssignmentUi.PlayerIdentifier);
 
                         ImGui.SameLine();
 
-                        if (ImGuiUtil.DrawDisabledButton("Apply to retainer", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetRetainer))
+                        if (ImGuiUtil.DrawDisabledButton("套用至雇員", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetRetainer))
                             _editorManager.ChangeEditorCharacter(_actorAssignmentUi.RetainerIdentifier);
 
                         ImGui.SameLine();
 
-                        if (ImGuiUtil.DrawDisabledButton("Apply to mannequin", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetMannequin))
+                        if (ImGuiUtil.DrawDisabledButton("套用至模特兒", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetMannequin))
                             _editorManager.ChangeEditorCharacter(_actorAssignmentUi.MannequinIdentifier);
 
                         var currentPlayer = _gameObjectService.GetCurrentPlayerActorIdentifier().CreatePermanent();
-                        if (ImGuiUtil.DrawDisabledButton("Apply to current character", buttonWidth, string.Empty, !currentPlayer.IsValid))
+                        if (ImGuiUtil.DrawDisabledButton("套用至目前角色", buttonWidth, string.Empty, !currentPlayer.IsValid))
                             _editorManager.ChangeEditorCharacter(currentPlayer);
 
                         ImGui.Separator();
@@ -154,11 +154,11 @@ public class BoneEditorPanel
                         ImGui.SameLine();
                         _actorAssignmentUi.DrawNpcInput(width.X / 2);
 
-                        if (ImGuiUtil.DrawDisabledButton("Apply to selected NPC", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetNpc))
+                        if (ImGuiUtil.DrawDisabledButton("套用至選取的 NPC", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetNpc))
                             _editorManager.ChangeEditorCharacter(_actorAssignmentUi.NpcIdentifier);
                     }
                     else
-                        ImGui.TextUnformatted("Incognito active");
+                        ImGui.TextUnformatted("匿名模式使用中");
                 }
             }
 
@@ -166,30 +166,30 @@ public class BoneEditorPanel
 
             using (var table = ImRaii.Table("BoneEditorMenu", 2))
             {
-                ImGui.TableSetupColumn("Attributes", ImGuiTableColumnFlags.WidthFixed);
-                ImGui.TableSetupColumn("Space", ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn("屬性", ImGuiTableColumnFlags.WidthFixed);
+                ImGui.TableSetupColumn("空白", ImGuiTableColumnFlags.WidthStretch);
 
                 ImGui.TableNextRow();
                 ImGui.TableNextColumn();
 
                 var modeChanged = false;
-                if (ImGui.RadioButton("Position", _editingAttribute == BoneAttribute.Position))
+                if (ImGui.RadioButton("位置", _editingAttribute == BoneAttribute.Position))
                 {
                     _editingAttribute = BoneAttribute.Position;
                     modeChanged = true;
                 }
-                CtrlHelper.AddHoverText($"May have unintended effects. Edit at your own risk!");
+                CtrlHelper.AddHoverText("可能產生非預期效果，請自行承擔編輯風險！");
 
                 ImGui.SameLine();
-                if (ImGui.RadioButton("Rotation", _editingAttribute == BoneAttribute.Rotation))
+                if (ImGui.RadioButton("旋轉", _editingAttribute == BoneAttribute.Rotation))
                 {
                     _editingAttribute = BoneAttribute.Rotation;
                     modeChanged = true;
                 }
-                CtrlHelper.AddHoverText($"May have unintended effects. Edit at your own risk!");
+                CtrlHelper.AddHoverText("可能產生非預期效果，請自行承擔編輯風險！");
 
                 ImGui.SameLine();
-                if (ImGui.RadioButton("Scale", _editingAttribute == BoneAttribute.Scale))
+                if (ImGui.RadioButton("縮放", _editingAttribute == BoneAttribute.Scale))
                 {
                     _editingAttribute = BoneAttribute.Scale;
                     modeChanged = true;
@@ -204,32 +204,32 @@ public class BoneEditorPanel
                 using (var disabled = ImRaii.Disabled(!_isUnlocked))
                 {
                     ImGui.SameLine();
-                    if (CtrlHelper.Checkbox("Show Live Bones", ref _isShowLiveBones))
+                    if (CtrlHelper.Checkbox("顯示即時骨骼", ref _isShowLiveBones))
                     {
                         _configuration.EditorConfiguration.ShowLiveBones = _isShowLiveBones;
                         _configuration.Save();
                     }
-                    CtrlHelper.AddHoverText($"If selected, present for editing all bones found in the game data,\nelse show only bones for which the profile already contains edits.");
+                    CtrlHelper.AddHoverText("勾選時顯示遊戲資料中找到的所有骨骼以供編輯；\n否則只顯示設定檔中已包含編輯內容的骨骼。");
 
                     ImGui.SameLine();
                     ImGui.BeginDisabled(!_isShowLiveBones);
-                    if (CtrlHelper.Checkbox("Mirror Mode", ref _isMirrorModeEnabled))
+                    if (CtrlHelper.Checkbox("鏡像模式", ref _isMirrorModeEnabled))
                     {
                         _configuration.EditorConfiguration.BoneMirroringEnabled = _isMirrorModeEnabled;
                         _configuration.Save();
                     }
-                    CtrlHelper.AddHoverText($"Bone changes will be reflected from left to right and vice versa");
+                    CtrlHelper.AddHoverText("骨骼變更會在左右兩側互相鏡像。");
                     ImGui.EndDisabled();
                 }
 
                 ImGui.TableNextColumn();
 
-                if (ImGui.SliderInt("##Precision", ref _precision, 0, 6, $"{_precision} Place{(_precision == 1 ? "" : "s")}"))
+                if (ImGui.SliderInt("##Precision", ref _precision, 0, 6, $"小數 {_precision} 位"))
                 {
                     _configuration.EditorConfiguration.EditorValuesPrecision = _precision;
                     _configuration.Save();
                 }
-                CtrlHelper.AddHoverText("Level of precision to display while editing values");
+                CtrlHelper.AddHoverText("編輯數值時顯示的小數精確度");
             }
 
             ImGui.Separator();
@@ -239,12 +239,12 @@ public class BoneEditorPanel
                 if (!table)
                     return;
 
-                var col1Label = _editingAttribute == BoneAttribute.Rotation ? "Roll" : "X";
-                var col2Label = _editingAttribute == BoneAttribute.Rotation ? "Pitch" : "Y";
-                var col3Label = _editingAttribute == BoneAttribute.Rotation ? "Yaw" : "Z";
-                var col4Label = _editingAttribute == BoneAttribute.Scale ? "All" : "N/A";
+                var col1Label = _editingAttribute == BoneAttribute.Rotation ? "翻滾" : "X";
+                var col2Label = _editingAttribute == BoneAttribute.Rotation ? "俯仰" : "Y";
+                var col3Label = _editingAttribute == BoneAttribute.Rotation ? "偏航" : "Z";
+                var col4Label = _editingAttribute == BoneAttribute.Scale ? "全部" : "不適用";
 
-                ImGui.TableSetupColumn("Bones", ImGuiTableColumnFlags.NoReorder | ImGuiTableColumnFlags.WidthFixed, 3 * CtrlHelper.IconButtonWidth);
+                ImGui.TableSetupColumn("骨骼", ImGuiTableColumnFlags.NoReorder | ImGuiTableColumnFlags.WidthFixed, 3 * CtrlHelper.IconButtonWidth);
 
                 ImGui.TableSetupColumn($"{col1Label}", ImGuiTableColumnFlags.NoReorder | ImGuiTableColumnFlags.WidthStretch);
                 ImGui.TableSetupColumn($"{col2Label}", ImGuiTableColumnFlags.NoReorder | ImGuiTableColumnFlags.WidthStretch);
@@ -252,7 +252,7 @@ public class BoneEditorPanel
                 ImGui.TableSetupColumn($"{col4Label}", ImGuiTableColumnFlags.NoReorder | ImGuiTableColumnFlags.WidthStretch);
                 ImGui.TableSetColumnEnabled(4, _editingAttribute == BoneAttribute.Scale);
 
-                ImGui.TableSetupColumn("Name", ImGuiTableColumnFlags.NoReorder | ImGuiTableColumnFlags.WidthStretch);
+                ImGui.TableSetupColumn("名稱", ImGuiTableColumnFlags.NoReorder | ImGuiTableColumnFlags.WidthStretch);
 
                 ImGui.TableHeadersRow();
 
@@ -333,13 +333,13 @@ public class BoneEditorPanel
             return;
 
         ImGui.SetCursorPos(new Vector2(ImGui.GetWindowWidth() / 4 - 40, ImGui.GetWindowHeight() / 4));
-        ImGuiUtil.TextWrapped("You have unsaved changes in current template, what would you like to do?");
+        ImGuiUtil.TextWrapped("目前範本尚有未儲存的變更，請選擇處理方式。");
 
         var buttonWidth = new Vector2(150 * ImGuiHelpers.GlobalScale, 0);
         var yPos = ImGui.GetWindowHeight() - 2 * ImGui.GetFrameHeight();
         var xPos = (ImGui.GetWindowWidth() - ImGui.GetStyle().ItemSpacing.X) / 4 - buttonWidth.X;
         ImGui.SetCursorPos(new Vector2(xPos, yPos));
-        if (ImGui.Button("Save", buttonWidth))
+        if (ImGui.Button("儲存", buttonWidth))
         {
             _editorManager.SaveChangesAndDisableEditor();
 
@@ -347,7 +347,7 @@ public class BoneEditorPanel
         }
 
         ImGui.SameLine();
-        if (ImGui.Button("Save as a copy", buttonWidth))
+        if (ImGui.Button("另存副本", buttonWidth))
         {
             _editorManager.SaveChangesAndDisableEditor(true);
 
@@ -355,7 +355,7 @@ public class BoneEditorPanel
         }
 
         ImGui.SameLine();
-        if (ImGui.Button("Do not save", buttonWidth))
+        if (ImGui.Button("不要儲存", buttonWidth))
         {
             _editorManager.DisableEditor();
 
@@ -363,7 +363,7 @@ public class BoneEditorPanel
         }
 
         ImGui.SameLine();
-        if (ImGui.Button("Keep editing", buttonWidth))
+        if (ImGui.Button("繼續編輯", buttonWidth))
         {
             ImGui.CloseCurrentPopup();
         }
@@ -375,7 +375,7 @@ public class BoneEditorPanel
     {
         var output = ImGuiComponents.IconButton(bone.BoneCodeName, FontAwesomeIcon.Recycle);
         CtrlHelper.AddHoverText(
-            $"Reset '{BoneData.GetBoneDisplayName(bone.BoneCodeName)}' to default {_editingAttribute} values");
+            $"將「{BoneData.GetBoneDisplayName(bone.BoneCodeName)}」重設為預設的 {_editingAttribute} 數值");
 
         if (output)
         {
@@ -391,7 +391,7 @@ public class BoneEditorPanel
     {
         var output = ImGuiComponents.IconButton(bone.BoneCodeName, FontAwesomeIcon.ArrowCircleLeft);
         CtrlHelper.AddHoverText(
-            $"Revert '{BoneData.GetBoneDisplayName(bone.BoneCodeName)}' to last saved {_editingAttribute} values");
+            $"將「{BoneData.GetBoneDisplayName(bone.BoneCodeName)}」還原為上次儲存的 {_editingAttribute} 數值");
 
         if (output)
         {
@@ -504,14 +504,14 @@ public class BoneEditorPanel
             ImGui.PushStyleColor(ImGuiCol.Text, Constants.Colors.Warning);
             ImGuiUtil.PrintIcon(FontAwesomeIcon.Wrench);
             ImGui.PopStyleColor();
-            CtrlHelper.AddHoverText("This is a bone from modded skeleton." +
-                "\r\nIMPORTANT: The Customize+ team does not provide support for issues related to these bones." +
-                "\r\nThese bones need special clothing and body mods designed specifically for them." +
-                "\r\nEven if they are intended for these bones, not all clothing mods will support every bone." +
-                "\r\nIf you experience issues, try performing the same actions using posing tools.");
+                CtrlHelper.AddHoverText("這是來自模組骨架的骨骼。" +
+                                        "\r\n重要：Customize+ 團隊不提供這些骨骼相關問題的支援。" +
+                                        "\r\n這些骨骼需要專為其設計的服裝與身體模組。" +
+                                        "\r\n即使模組是為這些骨骼設計，也不代表所有服裝模組都支援每一根骨骼。" +
+                                        "\r\n若遇到問題，請嘗試以擺姿勢工具執行相同操作。");
             ImGui.SameLine();
         }
-        CtrlHelper.StaticLabel(displayName, CtrlHelper.TextAlignment.Left, BoneData.IsIVCSCompatibleBone(codename) ? $"(IVCS Compatible) {codename}" : codename);
+            CtrlHelper.StaticLabel(displayName, CtrlHelper.TextAlignment.Left, BoneData.IsIVCSCompatibleBone(codename) ? $"（支援 IVCS）{codename}" : codename);
 
         if (flagUpdate)
         {

@@ -102,7 +102,7 @@ public partial class PopupSystem
             var yPos = ImGui.GetWindowHeight() - 2 * ImGui.GetFrameHeight();
             var xPos = (ImGui.GetWindowWidth() - ImGui.GetStyle().ItemSpacing.X - buttonWidth.X) / 2;
             ImGui.SetCursorPos(new Vector2(xPos, yPos));
-            if (ImGui.Button("Ok", buttonWidth))
+            if (ImGui.Button("確定", buttonWidth))
             {
                 ImGui.CloseCurrentPopup();
                 _displayedPopups.RemoveAt(i--);

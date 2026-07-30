@@ -63,7 +63,7 @@ public class ActorAssignmentUi
             return;
 
         ImGui.SetNextItemWidth(width);
-        if (ImGui.InputTextWithHint("##NewCharacter", "Character Name...", ref _newCharacterName, 32))
+        if (ImGui.InputTextWithHint("##NewCharacter", "角色名稱……", ref _newCharacterName, 32))
             UpdateIdentifiersInternal();
     }
 

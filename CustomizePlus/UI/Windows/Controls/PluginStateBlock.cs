@@ -44,43 +44,43 @@ public class PluginStateBlock
         if(_hookingService.RenderHookFailed || _hookingService.MovementHookFailed)
         {
             severity = PluginStateSeverity.Error;
-            message = "Detected failure in game hooks. Customize+ disabled.";
+            message = "偵測到遊戲 Hook 發生錯誤，Customize+ 已停用。";
         }
         else if (!_configuration.PluginEnabled)
         {
             severity = PluginStateSeverity.Warning;
-            message = "Plugin is disabled, template bone editing is not available.";
+            message = "插件目前已停用，無法使用範本骨骼編輯。";
         }
         else if (_boneEditorPanel.IsEditorActive)
         {
             if (!_boneEditorPanel.IsCharacterFound)
             {
                 severity = PluginStateSeverity.Error;
-                message = $"Selected preview character was not found.";
+            message = "找不到選取的預覽角色。";
             }
             else
             {
                 if (_boneEditorPanel.HasChanges)
                     severity = PluginStateSeverity.Warning;
 
-                message = $"Editor is active.{(_boneEditorPanel.HasChanges ? " You have unsaved changes, finish template bone editing to open save/revert dialog." : "")}";
+            message = $"編輯器使用中。{(_boneEditorPanel.HasChanges ? " 尚有未儲存的變更；結束範本骨骼編輯即可開啟儲存／還原視窗。" : "")}";
             }
         }
         else if (_gameStateService.GameInPosingMode())
         {
             severity = PluginStateSeverity.Warning;
-            message = "GPose active. Compatibility with posing tools is limited.";
+            message = "團體姿勢使用中，與其他擺姿勢工具的相容性有限。";
         }
         else if (_ipcService.IPCFailed) //this is a low priority error
         {
             severity = PluginStateSeverity.Error;
-            message = "Detected failure in IPC. Integrations with other plugins will not function.";
+            message = "偵測到 IPC 發生錯誤，與其他插件的整合功能將無法運作。";
         }
         else if(VersionHelper.IsTesting)
         {
             severity = PluginStateSeverity.Warning;
-            message = "You are running testing version of Customize+, hover for more information.";
-            hoverInfo = "This is a testing build of Customize+. Some features like integration with other plugins might not function correctly.";
+            message = "目前使用的是 Customize+ 測試版本，將滑鼠移至此處可查看詳情。";
+            hoverInfo = "這是 Customize+ 的測試組建，與其他插件整合等部分功能可能無法正常運作。";
         }
 
         if (message != null)

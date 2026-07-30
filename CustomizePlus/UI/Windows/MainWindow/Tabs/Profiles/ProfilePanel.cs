@@ -43,7 +43,7 @@ public class ProfilePanel
     private int _dragIndex = -1;
 
     private string SelectionName
-        => _selector.Selected == null ? "No Selection" : _selector.IncognitoMode ? _selector.Selected.Incognito : _selector.Selected.Name.Text;
+        => _selector.Selected == null ? "未選取" : _selector.IncognitoMode ? _selector.Selected.Incognito : _selector.Selected.Name.Text;
 
     public ProfilePanel(
         ProfileFileSystemSelector selector,
@@ -85,13 +85,13 @@ public class ProfilePanel
             : _selector.Selected.IsWriteProtected
                 ? new HeaderDrawer.Button
                 {
-                    Description = "Make this profile editable.",
+                Description = "允許編輯此設定檔。",
                     Icon = FontAwesomeIcon.Lock,
                     OnClick = () => _manager.SetWriteProtection(_selector.Selected!, false)
                 }
                 : new HeaderDrawer.Button
                 {
-                    Description = "Write-protect this profile.",
+                Description = "將此設定檔設為寫入保護。",
                     Icon = FontAwesomeIcon.LockOpen,
                     OnClick = () => _manager.SetWriteProtection(_selector.Selected!, true)
                 };
@@ -112,7 +112,7 @@ public class ProfilePanel
         var sizeFolders = availableSizePercent * 65;
 
         ImGui.NewLine();
-        ImGui.TextUnformatted("Currently Selected Profiles");
+        ImGui.TextUnformatted("目前選取的設定檔");
         ImGui.Separator();
         using var table = ImRaii.Table("profile", 3, ImGuiTableFlags.RowBg);
         ImGui.TableSetupColumn("btn", ImGuiTableColumnFlags.WidthFixed, sizeType);
@@ -126,7 +126,7 @@ public class ProfilePanel
             using var id = ImRaii.PushId(i++);
             ImGui.TableNextColumn();
             var icon = (path is ProfileFileSystem.Leaf ? FontAwesomeIcon.FileCircleMinus : FontAwesomeIcon.FolderMinus).ToIconString();
-            if (ImGuiUtil.DrawDisabledButton(icon, new Vector2(sizeType), "Remove from selection.", false, true))
+                if (ImGuiUtil.DrawDisabledButton(icon, new Vector2(sizeType), "從選取項目中移除。", false, true))
                 _selector.RemovePathFromMultiSelection(path);
 
             ImGui.TableNextColumn();
@@ -135,7 +135,7 @@ public class ProfilePanel
 
             ImGui.TableNextColumn();
             ImGui.AlignTextToFramePadding();
-            ImGui.TextUnformatted(_selector.IncognitoMode ? "Incognito is active" : fullName);
+                ImGui.TextUnformatted(_selector.IncognitoMode ? "匿名模式使用中" : fullName);
         }
     }
 
@@ -155,7 +155,7 @@ public class ProfilePanel
 
             ImGui.Separator();
 
-            var isShouldDraw = ImGui.CollapsingHeader("Add character");
+            var isShouldDraw = ImGui.CollapsingHeader("新增角色");
 
             if (isShouldDraw)
                 DrawAddCharactersArea();
@@ -181,8 +181,8 @@ public class ProfilePanel
             {
                 if (ImGui.Checkbox("##Enabled", ref enabled))
                     _manager.SetEnabled(_selector.Selected!, enabled);
-                ImGuiUtil.LabeledHelpMarker("Enabled",
-                    "Whether the templates in this profile should be applied at all.");
+                    ImGuiUtil.LabeledHelpMarker("啟用",
+                        "是否要套用此設定檔中的範本。");
             }
         }
     }
@@ -196,7 +196,7 @@ public class ProfilePanel
                 ImGui.TableSetupColumn("BasicCol1", ImGuiTableColumnFlags.WidthFixed, ImGui.CalcTextSize("lorem ipsum dolor").X);
                 ImGui.TableSetupColumn("BasicCol2", ImGuiTableColumnFlags.WidthStretch);
 
-                ImGuiUtil.DrawFrameColumn("Profile Name");
+                    ImGuiUtil.DrawFrameColumn("設定檔名稱");
                 ImGui.TableNextColumn();
                 var width = new Vector2(ImGui.GetContentRegionAvail().X, 0);
                 var name = _newName ?? _selector.Selected!.Name;
@@ -222,7 +222,7 @@ public class ProfilePanel
 
                 ImGui.TableNextRow();
 
-                ImGuiUtil.DrawFrameColumn("Priority");
+                    ImGuiUtil.DrawFrameColumn("優先度");
                 ImGui.TableNextColumn();
 
                 var priority = _newPriority ?? _selector.Selected!.Priority;
@@ -241,8 +241,8 @@ public class ProfilePanel
                     _changedProfile = null;
                 }
 
-                ImGuiComponents.HelpMarker("Profiles with a higher number here take precedence before profiles with a lower number.\n" +
-                    "That means if two or more profiles affect same character, profile with higher priority will be applied to that character.");
+                    ImGuiComponents.HelpMarker("此處數值較高的設定檔會優先於數值較低者。\n" +
+                                               "若兩個以上的設定檔影響同一角色，將套用優先度較高的設定檔。");
             }
         }
     }
@@ -264,21 +264,21 @@ public class ProfilePanel
 
                 var buttonWidth = new Vector2(165 * ImGuiHelpers.GlobalScale - ImGui.GetStyle().ItemSpacing.X / 2, 0);
 
-                if (ImGuiUtil.DrawDisabledButton("Apply to player character", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetPlayer))
+                        if (ImGuiUtil.DrawDisabledButton("套用至玩家角色", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetPlayer))
                     _manager.AddCharacter(_selector.Selected!, _actorAssignmentUi.PlayerIdentifier);
 
                 ImGui.SameLine();
 
-                if (ImGuiUtil.DrawDisabledButton("Apply to retainer", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetRetainer))
+                        if (ImGuiUtil.DrawDisabledButton("套用至雇員", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetRetainer))
                     _manager.AddCharacter(_selector.Selected!, _actorAssignmentUi.RetainerIdentifier);
 
                 ImGui.SameLine();
 
-                if (ImGuiUtil.DrawDisabledButton("Apply to mannequin", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetMannequin))
+                        if (ImGuiUtil.DrawDisabledButton("套用至模特兒", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetMannequin))
                     _manager.AddCharacter(_selector.Selected!, _actorAssignmentUi.MannequinIdentifier);
 
                 var currentPlayer = _actorManager.GetCurrentPlayer().CreatePermanent();
-                if (ImGuiUtil.DrawDisabledButton("Apply to current character", buttonWidth, string.Empty, !currentPlayer.IsValid))
+                        if (ImGuiUtil.DrawDisabledButton("套用至目前角色", buttonWidth, string.Empty, !currentPlayer.IsValid))
                     _manager.AddCharacter(_selector.Selected!, currentPlayer);
 
                 ImGui.Separator();
@@ -287,7 +287,7 @@ public class ProfilePanel
                 ImGui.SameLine();
                 _actorAssignmentUi.DrawNpcInput(width.X / 2);
 
-                if (ImGuiUtil.DrawDisabledButton("Apply to selected NPC", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetNpc))
+                        if (ImGuiUtil.DrawDisabledButton("套用至選取的 NPC", buttonWidth, string.Empty, !_actorAssignmentUi.CanSetNpc))
                     _manager.AddCharacter(_selector.Selected!, _actorAssignmentUi.NpcIdentifier);
             }
         }
@@ -301,8 +301,8 @@ public class ProfilePanel
         {
             if (ImGui.Checkbox("##DefaultLocalPlayerProfile", ref isDefaultLP))
                 _manager.SetDefaultLocalPlayerProfile(isDefaultLP ? _selector.Selected! : null);
-            ImGuiUtil.LabeledHelpMarker("Apply to any character you are logged in with",
-                "Whether the templates in this profile should be applied to any character you are currently logged in with.\r\nTakes priority over the next option for said character.\r\nThis setting cannot be applied to multiple profiles.");
+                    ImGuiUtil.LabeledHelpMarker("套用至自己登入的所有角色",
+                        "是否將此設定檔中的範本套用至目前登入的任意角色。\r\n對該角色而言，此選項的優先度高於下一個選項。\r\n此設定不能同時套用於多個設定檔。");
         }
         if (isDefaultLPOrCurrentProfilesEnabled)
         {
@@ -310,7 +310,7 @@ public class ProfilePanel
             ImGui.PushStyleColor(ImGuiCol.Text, Constants.Colors.Warning);
             ImGuiUtil.PrintIcon(FontAwesomeIcon.ExclamationTriangle);
             ImGui.PopStyleColor();
-            ImGuiUtil.HoverTooltip("Can only be changed when both currently selected and profile where this checkbox is checked are disabled.");
+                        ImGuiUtil.HoverTooltip("只有目前選取的設定檔與已勾選此選項的設定檔皆停用時才能變更。");
         }
 
         ImGui.SameLine();
@@ -324,8 +324,8 @@ public class ProfilePanel
         {
             if (ImGui.Checkbox("##DefaultProfile", ref isDefault))
                 _manager.SetDefaultProfile(isDefault ? _selector.Selected! : null);
-            ImGuiUtil.LabeledHelpMarker("Apply to all players and retainers",
-                "Whether the templates in this profile are applied to all players and retainers without a specific profile.\r\nThis setting cannot be applied to multiple profiles.");
+                    ImGuiUtil.LabeledHelpMarker("套用至所有玩家與雇員",
+                        "是否將此設定檔中的範本套用至沒有指定設定檔的所有玩家與雇員。\r\n此設定不能同時套用於多個設定檔。");
         }
         if (isDefaultOrCurrentProfilesEnabled)
         {
@@ -333,7 +333,7 @@ public class ProfilePanel
             ImGui.PushStyleColor(ImGuiCol.Text, Constants.Colors.Warning);
             ImGuiUtil.PrintIcon(FontAwesomeIcon.ExclamationTriangle);
             ImGui.PopStyleColor();
-            ImGuiUtil.HoverTooltip("Can only be changed when both currently selected and profile where this checkbox is checked are disabled.");
+                        ImGuiUtil.HoverTooltip("只有目前選取的設定檔與已勾選此選項的設定檔皆停用時才能變更。");
         }
         bool appliesToMultiple = _manager.DefaultProfile == _selector.Selected || _manager.DefaultLocalPlayerProfile == _selector.Selected;
 
@@ -345,7 +345,7 @@ public class ProfilePanel
             return;
 
         ImGui.TableSetupColumn("##charaDel", ImGuiTableColumnFlags.WidthFixed, ImGui.GetFrameHeight());
-        ImGui.TableSetupColumn("Character", ImGuiTableColumnFlags.WidthFixed, 320 * ImGuiHelpers.GlobalScale);
+                ImGui.TableSetupColumn("角色", ImGuiTableColumnFlags.WidthFixed, 320 * ImGuiHelpers.GlobalScale);
         ImGui.TableHeadersRow();
 
         if (appliesToMultiple)
@@ -353,7 +353,7 @@ public class ProfilePanel
             ImGui.TableNextColumn();
             ImGui.TableNextColumn();
             ImGui.AlignTextToFramePadding();
-            ImGui.TextUnformatted("Applies to multiple targets");
+                        ImGui.TextUnformatted("套用至多個目標");
             return;
         }
 
@@ -366,7 +366,7 @@ public class ProfilePanel
             ImGui.TableNextColumn();
             ImGui.TableNextColumn();
             ImGui.AlignTextToFramePadding();
-            ImGui.TextUnformatted("No characters are associated with this profile");
+                ImGui.TextUnformatted("此設定檔未關聯任何角色");
         }
 
         foreach (var (character, idx) in charas)
@@ -375,14 +375,14 @@ public class ProfilePanel
             ImGui.TableNextColumn();
             var keyValid = _configuration.UISettings.DeleteTemplateModifier.IsActive();
             var tt = keyValid
-                ? "Remove this character from the profile."
-                : $"Remove this character from the profile.\nHold {_configuration.UISettings.DeleteTemplateModifier} to remove.";
+                        ? "從設定檔中移除此角色。"
+                        : $"從設定檔中移除此角色。\n按住 {_configuration.UISettings.DeleteTemplateModifier} 以移除。";
 
             if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Trash.ToIconString(), new Vector2(ImGui.GetFrameHeight()), tt, !keyValid, true))
                 _endAction = () => _manager.DeleteCharacter(_selector.Selected!, character);
             ImGui.TableNextColumn();
             ImGui.AlignTextToFramePadding();
-            ImGui.TextUnformatted(!_selector.IncognitoMode ? $"{character.ToNameWithoutOwnerName()}{character.TypeToString()}" : "Incognito");
+            ImGui.TextUnformatted(!_selector.IncognitoMode ? $"{character.ToNameWithoutOwnerName()}{character.TypeToString()}" : "匿名");
 
             var profiles = _manager.GetEnabledProfilesByActor(character).ToList();
             if (profiles.Count > 1)
@@ -408,10 +408,10 @@ public class ProfilePanel
                 ImGui.PopStyleColor();
 
                 if (profiles.Any(x => x.IsTemporary))
-                    ImGuiUtil.HoverTooltip("This character is being affected by temporary profile set by external plugin. This profile will not be applied!");
+                    ImGuiUtil.HoverTooltip("此角色正受到外部插件設定的臨時設定檔影響，因此不會套用此設定檔！");
                 else
-                    ImGuiUtil.HoverTooltip(profiles[0] != _selector.Selected! ? "Several profiles are trying to affect this character. This profile will not be applied!" :
-                        "Several profiles are trying to affect this character. This profile is being applied.");
+                    ImGuiUtil.HoverTooltip(profiles[0] != _selector.Selected! ? "有多個設定檔正嘗試影響此角色，因此不會套用此設定檔！" :
+                        "有多個設定檔正嘗試影響此角色，目前正在套用此設定檔。");
             }
         }
 
@@ -428,7 +428,7 @@ public class ProfilePanel
         ImGui.TableSetupColumn("##del", ImGuiTableColumnFlags.WidthFixed, ImGui.GetFrameHeight());
         ImGui.TableSetupColumn("##Index", ImGuiTableColumnFlags.WidthFixed, 30 * ImGuiHelpers.GlobalScale);
 
-        ImGui.TableSetupColumn("Template", ImGuiTableColumnFlags.WidthFixed, 220 * ImGuiHelpers.GlobalScale);
+                ImGui.TableSetupColumn("範本", ImGuiTableColumnFlags.WidthFixed, 220 * ImGuiHelpers.GlobalScale);
 
         ImGui.TableSetupColumn("##editbtn", ImGuiTableColumnFlags.WidthFixed, 120 * ImGuiHelpers.GlobalScale);
 
@@ -442,8 +442,8 @@ public class ProfilePanel
             ImGui.TableNextColumn();
             var keyValid = _configuration.UISettings.DeleteTemplateModifier.IsActive();
             var tt = keyValid
-                ? "Remove this template from the profile."
-                : $"Remove this template from the profile.\nHold {_configuration.UISettings.DeleteTemplateModifier} to remove.";
+                        ? "從設定檔中移除此範本。"
+                        : $"從設定檔中移除此範本。\n按住 {_configuration.UISettings.DeleteTemplateModifier} 以移除。";
 
             if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Trash.ToIconString(), new Vector2(ImGui.GetFrameHeight()), tt, !keyValid, true))
                 _endAction = () => _manager.DeleteTemplate(_selector.Selected!, idx);
@@ -457,7 +457,7 @@ public class ProfilePanel
 
             var disabledCondition = _templateEditorManager.IsEditorActive || template.IsWriteProtected;
 
-            if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Edit.ToIconString(), new Vector2(ImGui.GetFrameHeight()), "Open this template in the template editor", disabledCondition, true))
+                    if (ImGuiUtil.DrawDisabledButton(FontAwesomeIcon.Edit.ToIconString(), new Vector2(ImGui.GetFrameHeight()), "在範本編輯器中開啟此範本", disabledCondition, true))
                 _templateEditorEvent.Invoke(TemplateEditorEvent.Type.EditorEnableRequested, template);
 
             if (disabledCondition)
@@ -467,14 +467,14 @@ public class ProfilePanel
                 ImGui.PushStyleColor(ImGuiCol.Text, Constants.Colors.Warning);
                 ImGuiUtil.PrintIcon(FontAwesomeIcon.ExclamationTriangle);
                 ImGui.PopStyleColor();
-                ImGuiUtil.HoverTooltip("This template cannot be edited because it is either write protected or you are already editing one of the templates.");
+                        ImGuiUtil.HoverTooltip("無法編輯此範本，因為它已受寫入保護，或你已在編輯其他範本。");
             }
         }
 
         ImGui.TableNextColumn();
         ImGui.TableNextColumn();
         ImGui.AlignTextToFramePadding();
-        ImGui.TextUnformatted("New");
+                ImGui.TextUnformatted("新增");
         ImGui.TableNextColumn();
         _templateCombo.Draw(_selector.Selected!, null, -1);
         ImGui.TableNextRow();
@@ -504,7 +504,7 @@ public class ProfilePanel
         {
             if (source)
             {
-                ImGui.TextUnformatted($"Moving template #{index + 1:D2}...");
+            ImGui.TextUnformatted($"正在移動範本 #{index + 1:D2}……");
                 if (ImGui.SetDragDropPayload(dragDropLabel, null, 0))
                 {
                     _dragIndex = index;
