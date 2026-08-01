@@ -74,8 +74,15 @@ public abstract class TemplateComboBase : FilterComboCache<Tuple<Template, strin
         _currentTemplate = currentTemplate;
         UpdateCurrentSelection();
         InnerWidth = 400 * ImGuiHelpers.GlobalScale;
-        CurrentSelectionIdx = Math.Max(Items.IndexOf(p => currentTemplate == p.Item1), 0);
-        CurrentSelection = Items[CurrentSelectionIdx];
+
+        // A profile can temporarily have no available templates (for example after
+        // deleting its last template). Do not manufacture index 0 for an empty list.
+        if (Items.Count > 0)
+        {
+            CurrentSelectionIdx = Math.Max(Items.IndexOf(p => currentTemplate == p.Item1), 0);
+            CurrentSelection = Items[CurrentSelectionIdx];
+        }
+
         var name = label ?? "在此選擇範本……";
         var ret = Draw("##template", name, string.Empty, width, ImGui.GetTextLineHeightWithSpacing())
          && CurrentSelection != null;
