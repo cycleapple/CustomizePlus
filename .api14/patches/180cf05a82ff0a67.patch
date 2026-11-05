@@ -1,0 +1,31 @@
+diff --git a/ECommonsLite/ECommonsLite.csproj b/ECommonsLite/ECommonsLite.csproj
+index bf0fac7..ed8b684 100644
+--- a/ECommonsLite/ECommonsLite.csproj
++++ b/ECommonsLite/ECommonsLite.csproj
+@@ -1,4 +1,4 @@
+-﻿<Project Sdk="Dalamud.NET.Sdk/13.0.0">
++<Project Sdk="Dalamud.NET.Sdk/14.0.1">
+ 
+ 	<PropertyGroup>
+ 		<NoWarn>CS1591;CA1401;CS0649;CS8632;CS0414;CS0169;IDE1006;CS0419</NoWarn>
+diff --git a/ECommonsLite/packages.lock.json b/ECommonsLite/packages.lock.json
+index bd07e56..321bd09 100644
+--- a/ECommonsLite/packages.lock.json
++++ b/ECommonsLite/packages.lock.json
+@@ -1,12 +1,12 @@
+ {
+   "version": 1,
+   "dependencies": {
+-    "net9.0-windows7.0": {
++    "net10.0-windows7.0": {
+       "DotNet.ReproducibleBuilds": {
+         "type": "Direct",
+-        "requested": "[1.2.25, )",
+-        "resolved": "1.2.25",
+-        "contentHash": "xCXiw7BCxHJ8pF6wPepRUddlh2dlQlbr81gXA72hdk4FLHkKXas7EH/n+fk5UCA/YfMqG1Z6XaPiUjDbUNBUzg=="
++        "requested": "[1.2.39, )",
++        "resolved": "1.2.39",
++        "contentHash": "fcFN01tDTIQqDuTwr1jUQK/geofiwjG5DycJQOnC72i1SsLAk1ELe+apBOuZ11UMQG8YKFZG1FgvjZPbqHyatg=="
+       }
+     }
+   }
